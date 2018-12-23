@@ -1,6 +1,6 @@
 {
   "name": "react-scroll-edge-detector",
-  "version": "1.0..0",
+  "version": "1.0.1",
   "description": "",
   "main": "build/index.js",
   "scripts": {
@@ -10,6 +10,10 @@
   },
   "author": "Patryk Mazurkiewicz",
   "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/patmaz/react-scroll-edge-detector"
+  },
   "dependencies": {
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",

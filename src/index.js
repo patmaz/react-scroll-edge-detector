@@ -11,7 +11,9 @@ class BottomEdgeDetector extends React.Component {
     throttle: PropTypes.throttle,
   };
 
-  DEBOUNCE_TIME = this.props.debounce || 500;
+  DEBOUNCE_TIME = 500;
+  THROTTLE = 200;
+  OFFSET = 10;
 
   componentDidMount() {
     window.addEventListener('scroll', this.throttledHandleScroll);
@@ -23,7 +25,7 @@ class BottomEdgeDetector extends React.Component {
 
   debouncedCb = debounce(() => {
     this.props.onBottomReached && this.props.onBottomReached();
-  }, this.DEBOUNCE_TIME);
+  }, this.props.debounce || this.DEBOUNCE_TIME);
 
   handleScroll = () => {
     if (this.props.blockCb) {
@@ -33,12 +35,12 @@ class BottomEdgeDetector extends React.Component {
     const windowHeight = window.innerHeight;
     const wrapperHeight = this.wrapper.offsetHeight;
 
-    if (windowHeight-wrapperHeight >= rect.top-10) {
+    if (windowHeight-wrapperHeight >= rect.top-(this.props.offset || this.OFFSET)) {
       this.debouncedCb()
     }
   };
 
-  throttledHandleScroll = throttle(this.handleScroll, this.props.throttle || 200);
+  throttledHandleScroll = throttle(this.handleScroll, this.props.throttle || this.THROTTLE);
 
   render() {
     return(
