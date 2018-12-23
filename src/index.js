@@ -8,7 +8,8 @@ class BottomEdgeDetector extends React.Component {
     onBottomReached: PropTypes.func.isRequired,
     blockCb: PropTypes.bool,
     debounce: PropTypes.number,
-    throttle: PropTypes.throttle,
+    throttle: PropTypes.number,
+    styles: PropTypes.object,
   };
 
   DEBOUNCE_TIME = 500;
@@ -44,7 +45,7 @@ class BottomEdgeDetector extends React.Component {
 
   render() {
     return(
-      <div style={{ paddingBottom: '2rem' }} ref={ref => this.wrapper = ref}>
+      <div style={this.props.styles} ref={ref => this.wrapper = ref}>
         {this.props.children}
       </div>
     )
