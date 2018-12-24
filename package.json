@@ -1,6 +1,6 @@
 {
   "name": "react-scroll-edge-detector",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "build/index.js",
   "scripts": {
@@ -15,6 +15,7 @@
     "url": "https://github.com/patmaz/react-scroll-edge-detector"
   },
   "dependencies": {
+    "@babel/runtime": "^7.2.0",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",
     "react": "^16.7.0"
@@ -25,6 +26,7 @@
     "@babel/plugin-transform-react-jsx": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "babel-loader": "^8.0.4",
     "webpack": "^4.28.2",
     "webpack-cli": "^3.1.2"

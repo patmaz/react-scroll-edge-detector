@@ -4,7 +4,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
   },
   module: {
     rules: [
@@ -15,14 +15,18 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            "presets": ["@babel/preset-env"],
-            "plugins": ["@babel/plugin-transform-react-jsx", "@babel/plugin-proposal-class-properties"]
-          }
-        }
-      }
-    ]
+            presets: ['@babel/preset-env'],
+            plugins: [
+              '@babel/plugin-transform-runtime',
+              '@babel/plugin-transform-react-jsx',
+              '@babel/plugin-proposal-class-properties',
+            ],
+          },
+        },
+      },
+    ],
   },
   externals: {
-    'react': 'commonjs react'
-  }
+    react: 'commonjs react',
+  },
 };

@@ -26,14 +26,15 @@ class BottomEdgeDetector extends React.Component {
     window.removeEventListener('scroll', this.throttledHandleScroll);
   }
 
-  makeInitialCheck = () => {
+  makeInitialCheck = async () => {
     if (this.props.blockCb) {
       return;
     }
     const windowHeight = window.innerHeight;
     const wrapperHeight = this.wrapper.offsetHeight;
     if (windowHeight - wrapperHeight >= 0) {
-      this.props.onBottomReached().then(this.makeInitialCheck);
+      await this.props.onBottomReached();
+      this.makeInitialCheck();
     }
   };
 
@@ -49,19 +50,25 @@ class BottomEdgeDetector extends React.Component {
     const windowHeight = window.innerHeight;
     const wrapperHeight = this.wrapper.offsetHeight;
 
-    if (windowHeight-wrapperHeight >= rect.top-(this.props.offset || this.OFFSET)) {
-      this.debouncedCb()
+    if (
+      windowHeight - wrapperHeight >=
+      rect.top - (this.props.offset || this.OFFSET)
+    ) {
+      this.debouncedCb();
     }
   };
 
-  throttledHandleScroll = throttle(this.handleScroll, this.props.throttle || this.THROTTLE);
+  throttledHandleScroll = throttle(
+    this.handleScroll,
+    this.props.throttle || this.THROTTLE,
+  );
 
   render() {
-    return(
-      <div style={this.props.styles} ref={ref => this.wrapper = ref}>
+    return (
+      <div style={this.props.styles} ref={ref => (this.wrapper = ref)}>
         {this.props.children}
       </div>
-    )
+    );
   }
 }
 
