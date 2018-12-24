@@ -26,15 +26,14 @@ class BottomEdgeDetector extends React.Component {
     window.removeEventListener('scroll', this.throttledHandleScroll);
   }
 
-  makeInitialCheck = async () => {
+  makeInitialCheck = () => {
     if (this.props.blockCb) {
       return;
     }
     const windowHeight = window.innerHeight;
     const wrapperHeight = this.wrapper.offsetHeight;
     if (windowHeight - wrapperHeight >= 0) {
-      await this.props.onBottomReached();
-      this.makeInitialCheck();
+      this.props.onBottomReached().then(this.makeInitialCheck);
     }
   };
 
