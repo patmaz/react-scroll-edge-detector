@@ -10,6 +10,7 @@ class BottomEdgeDetector extends React.Component {
     debounce: PropTypes.number,
     throttle: PropTypes.number,
     styles: PropTypes.object,
+    initialCheck: PropTypes.bool,
   };
 
   DEBOUNCE_TIME = 500;
@@ -18,11 +19,24 @@ class BottomEdgeDetector extends React.Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.throttledHandleScroll);
+    this.props.initialCheck && this.makeInitialCheck();
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.throttledHandleScroll);
   }
+
+  makeInitialCheck = async () => {
+    if (this.props.blockCb) {
+      return;
+    }
+    const windowHeight = window.innerHeight;
+    const wrapperHeight = this.wrapper.offsetHeight;
+    if (windowHeight - wrapperHeight >= 0) {
+      await this.props.onBottomReached();
+      this.makeInitialCheck();
+    }
+  };
 
   debouncedCb = debounce(() => {
     this.props.onBottomReached && this.props.onBottomReached();
