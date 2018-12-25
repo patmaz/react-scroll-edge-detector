@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { debounce, throttle } from 'lodash';
+import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 
 interface IProps {
   onBottomReached: () => void | Promise<any>;
