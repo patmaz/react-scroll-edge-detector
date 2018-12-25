@@ -1,21 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import debounce from 'lodash/debounce';
-import throttle from 'lodash/throttle';
+import * as React from 'react';
+import { debounce, throttle } from 'lodash';
 
-class BottomEdgeDetector extends React.Component {
-  static propTypes = {
-    onBottomReached: PropTypes.func.isRequired,
-    blockCb: PropTypes.bool,
-    debounce: PropTypes.number,
-    throttle: PropTypes.number,
-    styles: PropTypes.object,
-    initialCheck: PropTypes.bool,
-  };
+interface IProps {
+  onBottomReached: () => void | Promise<any>;
+  blockCb?: boolean;
+  debounce?: number;
+  throttle?: number;
+  styles?: React.CSSProperties;
+  offset?: number;
+  initialCheck?: boolean;
+}
 
-  DEBOUNCE_TIME = 500;
-  THROTTLE = 200;
-  OFFSET = 10;
+const DEBOUNCE_TIME = 500;
+const THROTTLE = 200;
+const OFFSET = 10;
+
+class BottomEdgeDetector extends React.Component<IProps> {
+  wrapper: HTMLDivElement;
 
   componentDidMount() {
     window.addEventListener('scroll', this.throttledHandleScroll);
@@ -27,40 +28,40 @@ class BottomEdgeDetector extends React.Component {
   }
 
   makeInitialCheck = async () => {
-    if (this.props.blockCb) {
+    const { blockCb, onBottomReached } = this.props;
+    if (blockCb) {
       return;
     }
     const windowHeight = window.innerHeight;
     const wrapperHeight = this.wrapper.offsetHeight;
     if (windowHeight - wrapperHeight >= 0) {
-      await this.props.onBottomReached();
+      await onBottomReached();
       this.makeInitialCheck();
     }
   };
 
   debouncedCb = debounce(() => {
-    this.props.onBottomReached && this.props.onBottomReached();
-  }, this.props.debounce || this.DEBOUNCE_TIME);
+    const { onBottomReached } = this.props;
+    onBottomReached && onBottomReached();
+  }, this.props.debounce || DEBOUNCE_TIME);
 
   handleScroll = () => {
-    if (this.props.blockCb) {
+    const { blockCb, offset } = this.props;
+    if (blockCb) {
       return;
     }
     const rect = this.wrapper.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     const wrapperHeight = this.wrapper.offsetHeight;
 
-    if (
-      windowHeight - wrapperHeight >=
-      rect.top - (this.props.offset || this.OFFSET)
-    ) {
+    if (windowHeight - wrapperHeight >= rect.top - (offset || OFFSET)) {
       this.debouncedCb();
     }
   };
 
   throttledHandleScroll = throttle(
     this.handleScroll,
-    this.props.throttle || this.THROTTLE,
+    this.props.throttle || THROTTLE,
   );
 
   render() {
